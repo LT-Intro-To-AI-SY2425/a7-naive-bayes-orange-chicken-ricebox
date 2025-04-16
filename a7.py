@@ -1,3 +1,4 @@
+# Aden and Jonathan
 import math, os, pickle, re
 from typing import Tuple, List, Dict
 
@@ -120,7 +121,7 @@ class BayesClassifier:
         
         # get a list of the individual tokens that occur in text
         tokens = self.tokenize(text)
-
+        print(tokens)
 
         # create some variables to store the positive and negative probability. since
         # we will be adding logs of probabilities, the initial values for the positive
@@ -135,6 +136,12 @@ class BayesClassifier:
         # individual feature
         pos_denominator = sum(self.pos_freqs.values())
         neg_denominator = sum(self.neg_freqs.values())
+
+        vocab = set(self.pos_freqs.keys()).union(self.neg_freqs.keys())
+        vocab_size = len(vocab)
+
+        file = self.load_file("sorted_stoplist.txt")
+        stopwords = self.tokenize(file)
 
         # for each token in the text, calculate the probability of it occurring in a
         # postive document and in a negative document and add the logs of those to the
@@ -152,7 +159,9 @@ class BayesClassifier:
             # print(pos_score , neg_score)
         # for debugging purposes, it may help to print the overall positive and negative
         # probabilities
-        
+        print(f"Positive Probability: {pos_score}")
+        print(f"Negative Probability: {neg_score}")
+
 
         # determine whether positive or negative was more probable (i.e. which one was
         # larger)
@@ -301,4 +310,4 @@ if __name__ == "__main__":
 
     print()
     print(b.classify("intro to artificial intelligence is the best class"))
-    pass
+    
